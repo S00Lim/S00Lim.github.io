@@ -1,0 +1,16 @@
+@font-face{
+	font-family: 'Reed';
+	src: url('Reed Semibold Italic.otf') format('otf');
+	font-weight: 400;
+}
+
+
+
+
+body{
+	/* this is the outermost element on your page*/
+	background: lightblue;
+	color: white;
+	font-family:'Reed';
+	font-size: 150px;
+}
