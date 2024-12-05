@@ -9,9 +9,12 @@
 
 body{
 	/* this is the outermost element on your page*/
-	background: black;
-	color: white;
+	background: #d7e9ff;
+	color: black;
 	font-family:'Reed';
 	font-size: 50px;
 	line-height: 0.0;
+	margin-top: 30px; /* 상단 마진 */
+	margin-left: 40px; /* 왼쪽 마진 */
+	margin-right: 40px; /* 오른쪽 마진 */
 }
