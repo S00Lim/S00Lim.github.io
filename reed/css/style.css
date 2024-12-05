@@ -1,0 +1,16 @@
+@font-face{
+	font-family: 'ABCArizonaSerif';
+	src: url('ABCArizonaSerif-RegularItalic-Trial.woff') format('woff');
+	font-weight: 16;
+}
+
+
+
+
+body{
+	/* this is the outermost element on your page*/
+	background: white;
+	color: black;
+	font-family:'ABCArizonaSerif';
+	font-size: 16px;
+}
