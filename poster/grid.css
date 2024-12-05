@@ -1,5 +1,7 @@
 body{
 	margin: 0;
+		background: #c5c2b3;
+
 }
 main{
 	display: grid;
@@ -24,13 +26,23 @@ main{
 .circles-column{
 	grid-column: 3/5;
 }
+
+.last-column{
+	grid-column: 2/5;
+	
+}
 .circle{
-	height: 200px;
-	width: 200px;
-	background: blue;
+	height: 270px;
+	width: 270px;
+	background: #738c8a;
 	border-radius: 50%;
 	opacity: 0.5;
+	mix-blend-mode: multiply;
 	margin-top: -100px;
+}
+
+.circle:nth-child(3) {
+	background:black;
 }
 
 @media screen and (max-width: 500px){ 
