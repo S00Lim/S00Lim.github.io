@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: 'Reed';
-    src: url('Reed Semibold Italic') format('woff2');
+    src: url('Reed-SemiboldItalic.woff2') format('woff2');
     font-weight: 400;
 }
 
@@ -54,7 +54,7 @@ body {
 .column:nth-child(2) {
     padding-left: 30px; /* 왼쪽 여백 추가 */
     padding-right: 30px; /* 오른쪽 여백 추가 */
-    line-height: 1.3; /* 2단에만 필요한 스타일 */
+    line-height: 1.4; /* 2단에만 필요한 스타일 */
     text-align: justify;
 }
 
