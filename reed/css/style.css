@@ -4,6 +4,16 @@
     font-weight: 16;
 }
 
+
+@font-face {
+    font-family: 'Reed';
+    src: url('Reed Semibold Italic') format('otf');
+    font-weight: 400;
+}
+
+
+
+
 /* 전체 페이지 스타일 */
 body {
     font-family: 'ABCArizonaFlare';
@@ -53,4 +63,43 @@ body {
     font-style: italic;
     text-align: left; /* 왼쪽 정렬로 변경 */
     white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+/* 단어에 마우스 올렸을 때 스타일 */
+.column span {
+    transition: color 0.3s ease, opacity 0.3s ease; /* 텍스트 색상과 투명도 전환 효과 */
+    visibility: visible; /* 기본적으로 텍스트가 보이도록 설정 */
+}
+
+/* 호버 시 기존 텍스트 숨기지 않기 */
+.column span.hovered {
+    color: transparent; /* 기존 텍스트 색상 숨기지 않음 */
+    opacity: 1; /* opacity는 그대로 두어 보이게 */
+}
+
+/* 새로운 텍스트 표시 스타일 */
+.column span.new-text {
+    color: #3498db; /* 새로운 텍스트 색상 */
+    font-family: 'Reed';
+    font-size: 30rem; /* 글자 크기 */
+    opacity: 0; /* 초기에는 숨겨놓음 */
+    transition: opacity 0.5s ease-in-out; /* 부드럽게 나타나도록 설정 */
+    
+    /* 화면 하단에 위치시키기 */
+    position: fixed; /* 고정된 위치 */
+    bottom: 0; /* 화면의 하단에 위치 */
+    left: 50%; /* 화면의 수평 중앙에 위치 */
+    transform: translateX(-50%); /* 수평 중앙 맞추기 */
+    z-index: 9999; /* 다른 요소들 위에 위치 */
+}
+
+
+/* 새로운 텍스트가 보이도록 설정하는 스타일 */
+.column span.new-text.show {
+    opacity: 1; /* 보이게 설정 */
+}
+
+/* 호버 시 새로운 텍스트 보이기 */
+.column span:hover .new-text {
+    opacity: 1; /* 새로운 텍스트를 보이게 설정 */
 }
