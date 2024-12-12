@@ -150,19 +150,14 @@ body {
             opacity: 1;
         }
     }
-}
 
-/* 기본적으로 new-text 숨기기 */
-.new-text {
-    font-size: 16px; /* 기본 텍스트 크기 */
-    opacity: 0; /* 기본적으로 숨김 상태 */
-    transition: opacity 0.3s ease; /* 부드러운 전환 */
-}
+    /* 모바일에서 sound-text 숨기기 */
+    .sound-text {
+        display: none;
+    }
 
-/* 모바일에서 텍스트 크기 조정 */
-@media (max-width: 768px) {
+    /* 모바일에서 텍스트 크기 조정 */
     .new-text {
         font-size: 12px; /* 모바일에서의 작은 텍스트 크기 */
     }
-}
 }
