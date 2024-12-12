@@ -164,12 +164,12 @@ body {
     .new-text {
         font-size: 12px; /* 모바일에서의 작은 텍스트 크기 */
     }
-}
 
+    /* 모바일에서 sound-text 숨기기 */
+    .sound-text {
+        display: none;
+    }
 
-
-/* 모바일 대응을 위한 미디어 쿼리 */
-@media (max-width: 768px) {
     .column span .new-text {
         font-size: 20rem; /* 모바일 화면에 맞는 폰트 크기 */
         margin-top: -20rem; /* 모바일 화면에서의 위치 조정 */
@@ -186,10 +186,3 @@ body {
         transition: opacity 0.8s ease-out;
     }
 }
-
-@media screen and (max-width: 768px) {
-    .sound-text {
-        display: none;
-    }
-}
-
