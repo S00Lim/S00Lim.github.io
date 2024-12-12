@@ -87,7 +87,19 @@ body {
     opacity: 1; 
 }
 
+
+
+
+/* 여기부터 모바일 */
+
+
 @media (max-width: 768px) {
+    body {
+        margin-top: 20px; /* 모바일에서 상단에 20px 마진 추가 */
+    
+
+
+
     .container {
         display: block;
         padding: 10px;
@@ -139,7 +151,7 @@ body {
     .column span.new-text {
         color: #000000; 
         font-family: 'Reed';
-        font-size: 230px; 
+        font-size: 170px; 
         opacity: 0; 
         position: fixed; 
         bottom: 0; !important;
@@ -157,4 +169,8 @@ body {
         opacity: 0;
         transition: opacity 0.7s ease-out;
     }
+
+
+
+
 }
