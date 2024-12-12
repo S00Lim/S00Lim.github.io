@@ -172,8 +172,13 @@ body {
         display: none;
     }
 
+
+/* 이 밑에 .new-text 가 나타나는 그래픽임 */ 
+
+
+  
     .column span .new-text {
-        font-size: 4rem; /* 모바일 화면에 맞는 폰트 크기 (20rem은 너무 큼) */
+        font-size: 7rem; /* 모바일 화면에 맞는 폰트 크기 (20rem은 너무 큼) */
         margin-top: -5rem; /* 모바일 화면에서의 위치 조정 */
     }
 
