@@ -1,18 +1,15 @@
+
 @font-face {
     font-family: 'ABCArizonaFlare';
     src: url('ABCArizonaFlare-RegularItalic-Trial.woff2') format('woff2');
     font-weight: 16;
 }
 
-
 @font-face {
     font-family: 'Reed';
     src: url('Reed-SemiboldItalic.woff2') format('woff2');
     font-weight: 400;
 }
-
-
-
 
 /* 전체 페이지 스타일 */
 body {
@@ -94,7 +91,6 @@ body {
     margin-top: -45rem; /* 글자의 크기에 맞춰 하단 조정 */
 }
 
-
 /* 새로운 텍스트가 보이도록 설정하는 스타일 */
 .column span.new-text.show {
     opacity: 1; /* 보이게 설정 */
@@ -104,9 +100,6 @@ body {
 .column span:hover .new-text {
     opacity: 1; /* 새로운 텍스트를 보이게 설정 */
 }
-
-
-
 
 /* @@여기서부터 모바일@@ */
 
@@ -202,3 +195,14 @@ body {
     }
 }
 
+/* 모바일에서 텍스트 사라지게 하는 스타일 */
+.column span.clicked .new-text {
+    opacity: 1; /* 클릭 시 새로운 텍스트를 보이게 */
+    transition: opacity 3s ease-in-out; /* 3초 동안 서서히 사라지도록 설정 */
+}
+
+/* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
+.column span.clicked .new-text.fade-out {
+    opacity: 0;
+    transition: opacity 3s ease-out; /* 서서히 사라지게 설정 */
+}
