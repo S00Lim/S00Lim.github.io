@@ -84,11 +84,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // 클릭된 span에 clicked 클래스 추가
             this.classList.add('clicked');
 
-            // 3초 후에 clicked 클래스를 제거하여 텍스트가 사라지도록 설정
+            // 클릭된 span 내에서 새로운 텍스트 숨기기
+            const newTextSpan = this.querySelector('.new-text');
+            if (newTextSpan) {
+                newTextSpan.classList.remove('show'); // 클릭 후 새로운 텍스트 숨기기
+            }
+
+            // 3초 후에 clicked 클래스를 제거
             setTimeout(() => {
                 this.classList.remove('clicked');
-                // 클릭된 후 텍스트 숨기기
-                this.querySelector('.new-text').classList.remove('show'); // 텍스트 숨기기
             }, 3000); // 3초 후
         });
     });
