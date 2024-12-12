@@ -160,19 +160,27 @@ body {
         }
     }
 
-    /* 기본적으로 new-text 숨기기 */
-    .new-text {
-        font-size: 2rem; /* 모바일 화면에 맞는 폰트 크기 */
-        opacity: 0; /* 기본적으로 숨김 상태 */
-        transition: opacity 0.3s ease; /* 부드러운 전환 */
-        position: fixed; /* 고정된 위치 */
-        top: 100%; /* 화면 아래로 밀어놓기 */
-        left: 50%; /* 화면의 수평 중앙에 위치 */
-        transform: translateX(-50%); /* 수평 중앙 맞추기 */
-        z-index: 9999; /* 다른 요소들 위에 위치 */
-        margin-top: -2rem; /* 모바일 화면에서의 위치 조정 */
-    }
+}
+/* 기본적으로 new-text 숨기기 */
+.new-text {
+    opacity: 0; /* 기본적으로 숨김 상태 */
+    transition: opacity 0.3s ease; /* 부드러운 전환 */
+    position: fixed; /* 고정된 위치 */
+    bottom: 50; /* 화면 하단에 위치 */
+    left: 50%; /* 화면의 수평 중앙에 위치 */
+    transform: translateX(-50%); /* 수평 중앙 맞추기 */
+    z-index: 9999; /* 다른 요소들 위에 위치 */
+    font-size: 9rem !important; /* 강제로 적용 */
+    max-width: 50rem; /* 최대 크기 제한 */
+}
 
+/* 모바일에서 .new-text 크기 조정 */
+@media (max-width: 768px) {
+    .new-text {
+        font-size: 28rem !important; /* 더 작은 크기 설정 */
+        max-width: 30rem; /* 크기 제한 추가 */
+    }
+}
     /* 새로운 텍스트가 보이도록 설정하는 스타일 */
     .column span.clicked .new-text {
         opacity: 1;
