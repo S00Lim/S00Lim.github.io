@@ -156,3 +156,10 @@ body {
         opacity: 1; /* 클릭 시 텍스트 보이게 */
     }
 }
+
+/* 모바일 화면에서 Sound를 숨기기 */
+@media (max-width: 768px) {
+    .column:first-child {
+        display: none;
+    }
+}
