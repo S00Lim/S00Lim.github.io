@@ -1,0 +1,77 @@
+/* 공통 스타일 */
+body {
+	margin: 0;
+	background: #c5c2b3;
+}
+
+main {
+	display: grid;
+	height: 100vh;
+	grid-template-columns: repeat(5, 1fr);
+}
+
+.text-column {
+	grid-column: 1/3;
+	font-size: 40px;
+	font-family: sans-serif;
+	padding-top: 50vh;
+}
+
+.text-column p {
+	font-size: 16px;
+}
+
+.circles-column {
+	grid-column: 3/5;
+}
+
+.last-column {
+	grid-column: 5/6; /* 수정: 끝 열을 차지하도록 설정 */
+}
+
+.circle {
+	height: 270px;
+	width: 270px;
+	background: #738c8a;
+	border-radius: 50%;
+	opacity: 0.5;
+	mix-blend-mode: multiply;
+	margin-top: -100px;
+}
+
+.circle:nth-child(3) {
+	background: black;
+}
+
+/* 작은 화면 (모바일)용 반응형 스타일 */
+@media screen and (max-width: 500px) {
+	main {
+		grid-template-columns: 1fr; /* 모든 열을 하나로 만듦 */
+		height: auto; /* 높이를 자동으로 */
+	}
+
+	.text-column {
+		grid-column: 1/2; /* 한 줄에 배치 */
+		padding-top: 20px; /* 패딩 줄이기 */
+		font-size: 30px;
+	}
+
+	.circles-column {
+		grid-column: 1/2; /* 한 줄에 배치 */
+		display: flex; /* 가로로 원 배치 */
+		flex-wrap: wrap; /* 넘치는 원을 다음 줄로 */
+		justify-content: center; /* 가운데 정렬 */
+		gap: 10px; /* 원 간격 추가 */
+	}
+
+	.circle {
+		height: 100px; /* 원 크기 축소 */
+		width: 100px;  /* 원 크기 축소 */
+		background: yellow; /* 색상 변경 */
+	}
+
+	.last-column {
+		grid-column: 1/2; /* 한 줄에 배치 */
+		text-align: center; /* 정렬 */
+	}
+}
