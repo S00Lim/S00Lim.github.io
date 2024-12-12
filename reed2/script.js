@@ -67,24 +67,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-   // 모바일에서 클릭 시 텍스트 변경 처리
-if (isMobile) {
-    word.addEventListener('click', function() {
-        const newText = word.getAttribute('data-new-text');
-        
-        // 새로운 텍스트로 변경
-        let newTextSpan = document.createElement('span');
-        newTextSpan.textContent = newText;
-        newTextSpan.classList.add('new-text', 'show');
-        word.appendChild(newTextSpan);
+        // 모바일에서 텍스트 변경 처리 (기존 코드와 합침)
+        if (isMobile) {
+            const originalText = word.textContent;
 
-        // 3초 뒤에 텍스트 사라지게 하기 (페이드 아웃)
-        setTimeout(() => {
-            newTextSpan.classList.remove('show'); // 텍스트를 숨기기 위해 show 클래스를 제거
-            // opacity가 0으로 변할 때 텍스트를 DOM에서 제거
-            setTimeout(() => {
-                word.removeChild(newTextSpan); // 텍스트 삭제
-            }, 300); // 애니메이션 시간 (300ms)
-        }, 3000); // 3초 후에 실행
+            // 모바일에서 텍스트 내용 변경
+            if (originalText === "원본 텍스트") {
+                word.textContent = "모바일 전용 텍스트"; // 모바일에서의 새로운 텍스트
+            }
+        }
     });
-}
+
+    // 모든 span 요소에 대해 클릭 이벤트 처리
+    document.querySelectorAll('.column span').forEach(function(span) {
+        span.addEventListener('click', function() {
+            // 클릭된 span에 clicked 클래스 추가
+            this.classList.add('clicked');
+
+            // 클릭된 span 내에서 새로운 텍스트 숨기기
+            const newTextSpan = this.querySelector('.new-text');
+            if (newTextSpan) {
+                newTextSpan.classList.remove('show'); // 클릭 후 새로운 텍스트 숨기기
+            }
+
+            // 3초 후에 clicked 클래스를 제거
+            setTimeout(() => {
+                this.classList.remove('clicked');
+            }, 3000); // 3초 후
+        });
+    });
+});
+
+
+document.querySelectorAll('.column span').forEach(span => {
+    span.addEventListener('click', function() {
+        // 텍스트를 보이게 하기
+        const newText = this.querySelector('.new-text');
+        if (newText) {
+            newText.classList.add('show');
+            
+            // 3초 뒤에 텍스트를 자동으로 사라지게 하기
+            setTimeout(() => {
+                newText.classList.remove('show');
+            }, 3000); // 3초 후에 텍스트를 숨김
+        }
+    });
+});
