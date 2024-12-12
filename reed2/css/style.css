@@ -165,3 +165,25 @@ body {
         font-size: 12px; /* 모바일에서의 작은 텍스트 크기 */
     }
 }
+
+
+
+/* 모바일 대응을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .column span .new-text {
+        font-size: 20rem; /* 모바일 화면에 맞는 폰트 크기 */
+        margin-top: -20rem; /* 모바일 화면에서의 위치 조정 */
+    }
+    
+    /* 텍스트가 보이도록 설정하는 스타일 (모바일용) */
+    .column span.clicked .new-text {
+        opacity: 1;
+    }
+
+    /* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
+    .column span.clicked .new-text.fade-out {
+        opacity: 0;
+        transition: opacity 0.8s ease-out;
+    }
+}
+
