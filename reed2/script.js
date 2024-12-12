@@ -78,22 +78,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 모든 span 요소에 대해 클릭 이벤트 처리
+    // 클릭 이벤트 처리 (새로운 텍스트 나타나게 하고, 3초 뒤 자동으로 fadeout)
     document.querySelectorAll('.column span').forEach(function(span) {
         span.addEventListener('click', function() {
-            // 클릭된 span에 clicked 클래스 추가
-            this.classList.add('clicked');
-
-            // 클릭된 span 내에서 새로운 텍스트 숨기기
             const newTextSpan = this.querySelector('.new-text');
-            if (newTextSpan) {
-                newTextSpan.classList.remove('show'); // 클릭 후 새로운 텍스트 숨기기
-            }
 
-            // 3초 후에 clicked 클래스를 제거
-            setTimeout(() => {
-                this.classList.remove('clicked');
-            }, 3000); // 3초 후
+            if (newTextSpan) {
+                // 텍스트를 보이게 하기
+                newTextSpan.classList.add('show');
+                
+                // 3초 뒤에 텍스트를 자동으로 사라지게 하기
+                setTimeout(() => {
+                    newTextSpan.classList.remove('show');
+                }, 3000); // 3초 후에 텍스트를 숨김
+            }
         });
     });
 });
