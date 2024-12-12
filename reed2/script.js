@@ -67,23 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 모바일에서 클릭 시 텍스트 변경 처리
-        if (isMobile) {
-            word.addEventListener('click', function() {
-                const newText = word.getAttribute('data-new-text');
-                
-                // 새로운 텍스트로 변경
-                let newTextSpan = document.createElement('span');
-                newTextSpan.textContent = newText;
-                newTextSpan.classList.add('new-text', 'show');
-                word.appendChild(newTextSpan);
+   // 모바일에서 클릭 시 텍스트 변경 처리
+if (isMobile) {
+    word.addEventListener('click', function() {
+        const newText = word.getAttribute('data-new-text');
+        
+        // 새로운 텍스트로 변경
+        let newTextSpan = document.createElement('span');
+        newTextSpan.textContent = newText;
+        newTextSpan.classList.add('new-text', 'show');
+        word.appendChild(newTextSpan);
 
-                // 3초 뒤에 텍스트 사라지게 하기
-                setTimeout(() => {
-                    newTextSpan.classList.remove('show');
-                    word.removeChild(newTextSpan);
-                }, 3000);
-            });
-        }
+        // 3초 뒤에 텍스트 사라지게 하기 (페이드 아웃)
+        setTimeout(() => {
+            newTextSpan.classList.remove('show'); // 텍스트를 숨기기 위해 show 클래스를 제거
+            // opacity가 0으로 변할 때 텍스트를 DOM에서 제거
+            setTimeout(() => {
+                word.removeChild(newTextSpan); // 텍스트 삭제
+            }, 300); // 애니메이션 시간 (300ms)
+        }, 3000); // 3초 후에 실행
     });
-});
+}

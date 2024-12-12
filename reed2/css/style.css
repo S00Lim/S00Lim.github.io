@@ -150,14 +150,22 @@ body {
             opacity: 1;
         }
     }
-
-    /* 모바일에서 sound-text 숨기기 */
-    .sound-text {
-        display: none;
+/* 모바일에서만 적용될 스타일 */
+@media (max-width: 768px) {
+    /* 모바일에서 새로운 텍스트 스타일 */
+    .column span .new-text {
+        font-size: 12px; /* 모바일에서 텍스트 크기 줄이기 */
+        transition: opacity 1s ease-in-out; /* 모바일에서는 더 느린 fade-out 효과 */
     }
 
-    /* 모바일에서 텍스트 크기 조정 */
-    .new-text {
-        font-size: 12px; /* 모바일에서의 작은 텍스트 크기 */
+    /* 모바일에서 새로운 텍스트가 보이도록 설정하는 스타일 */
+    .column span .new-text.show {
+        opacity: 1;
+    }
+
+    /* 모바일에서 fade-out 효과를 위한 스타일 */
+    .column span .new-text.fade-out {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
     }
 }
