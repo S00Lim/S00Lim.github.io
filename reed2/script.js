@@ -67,19 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 마지막 단어가 사라지지 않는 문제를 해결하기 위해서
-        word.addEventListener('transitionend', function(event) {
-            if (event.propertyName === 'opacity') {  // opacity가 0으로 변할 때
-                const newTextSpans = word.querySelectorAll('.new-text');
-                newTextSpans.forEach(function(newTextSpan) {
-                    if (!newTextSpan.classList.contains('show')) {
-                        word.removeChild(newTextSpan); // 새로운 텍스트 삭제
-                    }
-                });
-            }
-        });
-
-        // 모바일에서는 텍스트 변경 처리 (기존 코드와 합침)
+        // 모바일에서 텍스트 변경 처리 (기존 코드와 합침)
         if (isMobile) {
             const originalText = word.textContent;
 
@@ -99,6 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // 3초 후에 clicked 클래스를 제거하여 텍스트가 사라지도록 설정
             setTimeout(() => {
                 this.classList.remove('clicked');
+                // 클릭된 후 텍스트 숨기기
+                this.querySelector('.new-text').classList.remove('show'); // 텍스트 숨기기
             }, 3000); // 3초 후
         });
     });
