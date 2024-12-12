@@ -2,13 +2,13 @@
 @font-face {
     font-family: 'ABCArizonaFlare';
     src: url('ABCArizonaFlare-RegularItalic-Trial.woff2') format('woff2');
-    font-weight: 400; /* 일반적인 두께로 설정 */
+    font-weight: 400;
 }
 
 @font-face {
     font-family: 'Reed';
     src: url('Reed-SemiboldItalic.woff2') format('woff2');
-    font-weight: 400; /* 일반적인 두께로 설정 */
+    font-weight: 400;
 }
 
 /* 전체 페이지 스타일 */
@@ -23,22 +23,22 @@ body {
 /* 그리드 컨테이너 */
 .container {
     display: grid;
-    grid-template-columns: 1fr 14fr 1fr; /* 가운데 셀을 넓게 설정 */
-    column-gap: 300px; /* 간격을 넓게 설정 */
+    grid-template-columns: 1fr 14fr 1fr;
+    column-gap: 300px;
     padding: 20px;
     max-width: 2000px;
     margin: 0 auto;
 }
 
-/* 단 스타일 (공통 스타일) */
+/* 단 스타일 */
 .column {
-    font-size: 0.8rem; /* 공통 font-size */
-    line-height: 1.6; /* 공통 line-height */
+    font-size: 0.8rem;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
-    background: none; /* 배경 제거 */
-    border: none; /* 테두리 제거 */
-    text-align: justify; /* 텍스트 정렬 */
+    background: none;
+    border: none;
+    text-align: justify;
 }
 
 /* 1단 강조 */
@@ -47,119 +47,120 @@ body {
     text-align: center;
 }
 
-/* 2단 스타일 (특화된 스타일) */
+/* 2단 스타일 */
 .column:nth-child(2) {
-    padding-left: 30px; /* 왼쪽 여백 추가 */
-    padding-right: 30px; /* 오른쪽 여백 추가 */
-    line-height: 1.4; /* 2단에만 필요한 스타일 */
+    padding-left: 30px;
+    padding-right: 30px;
+    line-height: 1.4;
     text-align: justify;
 }
 
-/* 3단 스타일 (특화된 스타일) */
+/* 3단 스타일 */
 .column:last-child {
     font-style: italic;
-    text-align: left; /* 왼쪽 정렬로 변경 */
-    white-space: nowrap; /* 줄바꿈 방지 */
+    text-align: left;
+    white-space: nowrap;
 }
 
 /* 단어에 마우스 올렸을 때 스타일 */
 .column span {
-    transition: color 0.3s ease, opacity 0.3s ease; /* 텍스트 색상과 투명도 전환 효과 */
-    visibility: visible; /* 기본적으로 텍스트가 보이도록 설정 */
+    transition: color 0.3s ease, opacity 0.3s ease;
+    visibility: visible;
 }
 
 /* 호버 시 기존 텍스트 숨기지 않기 */
 .column span.hovered {
-    color: transparent; /* 기존 텍스트 색상 숨기지 않음 */
-    opacity: 1; /* opacity는 그대로 두어 보이게 */
+    color: transparent;
+    opacity: 1;
 }
 
 /* 새로운 텍스트 표시 스타일 */
 .column span.new-text {
-    color: #000000; /* 새로운 텍스트 색상 */
+    color: #000000;
     font-family: 'Reed', sans-serif;
-    font-size: 47rem; /* 글자 크기 */
-    opacity: 0; /* 초기에는 숨겨놓음 */
-    transition: opacity 0.3s ease-in-out; /* 부드럽게 나타나도록 설정 */
-    
-    /* 화면 하단에 위치시키기 */
-    position: fixed; /* 고정된 위치 */
-    top: 100%; /* 화면 아래로 밀어놓기 */
-    left: 50%; /* 화면의 수평 중앙에 위치 */
-    transform: translateX(-50%); /* 수평 중앙 맞추기 */
-    z-index: 9999; /* 다른 요소들 위에 위치 */
-    margin-top: -45rem; /* 글자의 크기에 맞춰 하단 조정 */
+    font-size: 47rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: fixed;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    margin-top: -45rem;
 }
 
 /* 새로운 텍스트가 보이도록 설정하는 스타일 */
 .column span.new-text.show {
-    opacity: 1; /* 보이게 설정 */
+    opacity: 1;
 }
 
 /* 호버 시 새로운 텍스트 보이기 */
 .column span:hover .new-text {
-    opacity: 1; /* 새로운 텍스트를 보이게 설정 */
+    opacity: 1;
 }
 
 /* 모바일에서 그리드 레이아웃 제거 */
 @media (max-width: 768px) {
     .container {
-        display: block; /* 그리드 레이아웃을 없애고 블록형으로 설정 */
-        padding: 10px; /* 모바일에서는 패딩을 줄여줄 수 있습니다 */
+        display: block;
+        padding: 10px;
     }
 
-    /* 모바일에서 텍스트 크기 변경 */
     .column {
-        font-size: 16px; /* 모바일에서는 텍스트 크기를 작게 설정 */
-        line-height: 1.4; /* 줄 간격도 줄여줍니다 */
+        font-size: 16px;
+        line-height: 1.4;
     }
 
     .column:first-child {
-        font-size: 20px; /* 첫 번째 열의 텍스트 크기 변경 */
+        font-size: 20px;
         text-align: center;
     }
 
     .column:nth-child(2) {
-        font-size: 18px; /* 두 번째 열 텍스트 크기 */
+        font-size: 18px;
     }
 
     .column:last-child {
-        font-size: 16px; /* 세 번째 열 텍스트 크기 */
+        font-size: 16px;
         text-align: left;
     }
 
-    /* 추가로 모바일에서 텍스트 스타일 변경 */
+    /* 모바일에서 span 스타일 */
     .column span {
-        font-size: 14px; /* span 요소 텍스트 크기 */
-        color: #333; /* 모바일에서는 다른 색으로 설정 가능 */
+        font-size: 14px;
+        color: #333;
     }
 
-    /* 모바일에서 텍스트 줄 바꿈 처리 */
     .column {
-        white-space: normal; /* 모바일에서 텍스트가 길어지면 줄 바꿈 */
+        white-space: normal;
+    }
+
+    /* 모바일에서는 hover가 아니라 클릭을 통한 상호작용 */
+    @media (hover: none) and (pointer: coarse) {
+        .column span {
+            cursor: pointer;
+        }
+
+        .column span .new-text {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .column span.clicked .new-text {
+            opacity: 1;
+        }
     }
 }
 
-/* 모바일에서는 hover가 아니라 클릭을 통한 상호작용 */
-@media (hover: none) and (pointer: coarse) {
-    .column span {
-        cursor: pointer; /* 모바일에서 클릭 가능하도록 */
-    }
-
-    .column span .new-text {
-        opacity: 0; /* 처음에는 숨겨놓기 */
-        transition: opacity 1s ease-in-out; /* opacity 변경 시 부드러운 효과 */
-    }
-
-    /* 클릭 시 new-text가 나타나도록 설정 */
-    .column span.clicked .new-text {
-        opacity: 1; /* 클릭 시 텍스트 보이게 */
-    }
+/* 기본 new-text 스타일 */
+.new-text {
+    font-size: 16px;
+    transition: opacity 0.3s ease;
 }
 
-/* 모바일 화면에서 Sound를 숨기기 */
+/* 모바일 화면에서 new-text의 텍스트 크기 조정 */
 @media (max-width: 768px) {
-    .column:first-child {
-        display: none;
+    .new-text {
+        font-size: 12px;
     }
 }
