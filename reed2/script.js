@@ -67,31 +67,23 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // 모바일에서 텍스트 변경 처리 (기존 코드와 합침)
+        // 모바일에서 클릭 시 텍스트 변경 처리
         if (isMobile) {
-            const originalText = word.textContent;
-
-            // 모바일에서 텍스트 내용 변경
-            if (originalText === "원본 텍스트") {
-                word.textContent = "모바일 전용 텍스트"; // 모바일에서의 새로운 텍스트
-            }
-        }
-    });
-
-    // 클릭 이벤트 처리 (새로운 텍스트 나타나게 하고, 3초 뒤 자동으로 fadeout)
-    document.querySelectorAll('.column span').forEach(function(span) {
-        span.addEventListener('click', function() {
-            const newTextSpan = this.querySelector('.new-text');
-
-            if (newTextSpan) {
-                // 텍스트를 보이게 하기
-                newTextSpan.classList.add('show');
+            word.addEventListener('click', function() {
+                const newText = word.getAttribute('data-new-text');
                 
-                // 3초 뒤에 텍스트를 자동으로 사라지게 하기
+                // 새로운 텍스트로 변경
+                let newTextSpan = document.createElement('span');
+                newTextSpan.textContent = newText;
+                newTextSpan.classList.add('new-text', 'show');
+                word.appendChild(newTextSpan);
+
+                // 3초 뒤에 텍스트 사라지게 하기
                 setTimeout(() => {
                     newTextSpan.classList.remove('show');
-                }, 3000); // 3초 후에 텍스트를 숨김
-            }
-        });
+                    word.removeChild(newTextSpan);
+                }, 3000);
+            });
+        }
     });
 });
