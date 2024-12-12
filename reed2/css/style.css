@@ -138,6 +138,12 @@ body {
         color: #333;
     }
 
+        /* 모바일에서 sound-text 숨기기 */
+    .sound-text {
+        display: none;
+    }
+
+
     /* 모바일에서 hover가 아니라 클릭을 통한 상호작용 */
     @media (hover: none) and (pointer: coarse) {
         .column span {
