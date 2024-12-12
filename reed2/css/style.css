@@ -164,7 +164,7 @@ body {
 
     /* 모바일에서 텍스트 크기 조정 */
     .new-text {
-        font-size: 20px; /* 모바일에서의 작은 텍스트 크기 */
+        font-size: 16px; /* 모바일에서의 작은 텍스트 크기 */
     }
 
     /* 모바일에서 sound-text 숨기기 */
@@ -173,8 +173,8 @@ body {
     }
 
     .column span .new-text {
-        font-size: 4rem; /* 모바일 화면에 맞는 폰트 크기 (20rem은 너무 큼) */
-        margin-top: -4rem; /* 모바일 화면에서의 위치 조정 */
+        font-size: 6rem; /* 모바일 화면에 맞는 폰트 크기 (20rem은 너무 큼) */
+        margin-top: -3rem; /* 모바일 화면에서의 위치 조정 */
     }
 
     /* 텍스트가 보이도록 설정하는 스타일 (모바일용) */
