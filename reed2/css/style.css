@@ -155,7 +155,7 @@ body {
 
     /* 기본적으로 new-text 숨기기 */
     .new-text {
-        font-size: 7rem; /* 모바일 화면에 맞는 폰트 크기 */
+        font-size: 12rem; /* 모바일 화면에 맞는 폰트 크기 */
         opacity: 0; /* 기본적으로 숨김 상태 */
         transition: opacity 0.3s ease; /* 부드러운 전환 */
         position: fixed; /* 고정된 위치 */
@@ -174,6 +174,6 @@ body {
     /* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
     .column span.clicked .new-text.fade-out {
         opacity: 0;
-        transition: opacity 0.7s ease-out;
+        transition: opacity 0.5s ease-out;
     }
 }
