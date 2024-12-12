@@ -84,7 +84,7 @@ body {
     transition: opacity 0.3s ease-in-out; /* 부드럽게 나타나도록 설정 */
     
     /* 화면 하단에 위치시키기 */
-    position: fixed; /* 고정된 위치 */
+    position: absolute; /* 고정된 위치 */
     top: 100%; /* 화면 아래로 밀어놓기 */
     left: 50%; /* 화면의 수평 중앙에 위치 */
     transform: translateX(-50%); /* 수평 중앙 맞추기 */
@@ -101,6 +101,7 @@ body {
 .column span:hover .new-text {
     opacity: 1; /* 새로운 텍스트를 보이게 설정 */
 }
+
 
 
 
@@ -134,15 +135,14 @@ body {
 
     /* 모바일에서는 span 스타일 */
     .column span {
-        font-size: 14px;
+        font-size: 16px;
         color: #333;
     }
 
-        /* 모바일에서 sound-text 숨기기 */
+    /* 모바일에서 sound-text 숨기기 */
     .sound-text {
         display: none;
     }
-
 
     /* 모바일에서 hover가 아니라 클릭을 통한 상호작용 */
     @media (hover: none) and (pointer: coarse) {
@@ -160,31 +160,34 @@ body {
         }
     }
 
-}
-/* 기본적으로 new-text 숨기기 */
-.new-text {
-    opacity: 0; /* 기본적으로 숨김 상태 */
-    transition: opacity 0.3s ease; /* 부드러운 전환 */
-    position: fixed; /* 고정된 위치 */
-    bottom: 50; /* 화면 하단에 위치 */
-    left: 50%; /* 화면의 수평 중앙에 위치 */
-    transform: translateX(-50%); /* 수평 중앙 맞추기 */
-    z-index: 9999; /* 다른 요소들 위에 위치 */
-    font-size: 9rem !important; /* 강제로 적용 */
-    max-width: 50rem; /* 최대 크기 제한 */
+    /* 새로운 텍스트 표시 스타일 */
+
+
+/* 새로운 텍스트가 보이도록 설정하는 스타일 */
+.column span.new-text.show {
+    opacity: 1; /* 보이게 설정 */
 }
 
-/* 모바일에서 .new-text 크기 조정 */
-@media (max-width: 768px) {
-    .new-text {
-        font-size: 28rem !important; /* 더 작은 크기 설정 */
-        max-width: 30rem; /* 크기 제한 추가 */
+/* 모바일 전용 new-text 스타일 */
+   .column span.new-text {
+        color: #000000; /* 새로운 텍스트 색상 */
+        font-family: 'Reed';
+        font-size: 230px; /* 글자 크기 */
+        opacity: 0; /* 초기에는 숨겨놓음 */
+        position: fixed; /* 고정된 위치 */
+        bottom: 0; /* 화면 하단에 고정 */
+        left: 50%; /* 화면의 수평 중앙에 위치 */
+        transform: translateX(-50%); /* 수평 중앙 맞추기 */
+        z-index: 9999; /* 다른 요소들 위에 위치 */
+        transition: opacity 0.3s ease-in-out; /* 부드럽게 나타나도록 설정 */
+    }
+
+
+    /* 모바일에서 텍스트가 보이도록 설정하는 스타일 */
+    .column span.new-text.show {
+        opacity: 1; /* 보이게 설정 */
     }
 }
-    /* 새로운 텍스트가 보이도록 설정하는 스타일 */
-    .column span.clicked .new-text {
-        opacity: 1;
-    }
 
     /* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
     .column span.clicked .new-text.fade-out {
@@ -192,3 +195,6 @@ body {
         transition: opacity 0.7s ease-out;
     }
 }
+
+
+

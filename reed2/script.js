@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 audio.currentTime = 0; // 노래가 다시 시작되도록 초기화
             }
         });
+        
 
         // 클릭 이벤트 (click)
         word.addEventListener('click', function() {
