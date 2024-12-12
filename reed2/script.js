@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 3초 뒤에 fade-out 효과 추가
             setTimeout(function() {
                 newTextSpan.classList.add('fade-out'); // fade-out 클래스를 추가하여 텍스트를 서서히 사라지게 함
-            }, 1000); // 1초 후에 실행
+            }, 700); // 1초 후에 실행
         });
 
         // 텍스트의 opacity가 0으로 변할 때 새로운 텍스트 삭제

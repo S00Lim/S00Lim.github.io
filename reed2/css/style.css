@@ -190,24 +190,24 @@ body {
     /* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
     .column span.clicked .new-text.fade-out {
         opacity: 0;
-        transition: opacity 1s ease-out;
+        transition: opacity 0.7s ease-out;
     }
 
     /* 텍스트 클릭 시 서서히 사라지도록 설정 */
     .column span.clicked .new-text {
         opacity: 1; /* 클릭 시 텍스트 보이도록 */
-        transition: opacity 1s ease-in-out; /* 3초 동안 서서히 사라지도록 설정 */
+        transition: opacity 0.7s ease-in-out; /* 3초 동안 서서히 사라지도록 설정 */
     }
 }
 
 /* 모바일에서 텍스트 사라지게 하는 스타일 */
 .column span.clicked .new-text {
     opacity: 1; /* 클릭 시 새로운 텍스트를 보이게 */
-    transition: opacity 1s ease-in-out; /* 3초 동안 서서히 사라지도록 설정 */
+    transition: opacity 0.7s ease-in-out; /* 3초 동안 서서히 사라지도록 설정 */
 }
 
 /* 텍스트가 사라지게 하기 위한 스타일 (fade-out) */
 .column span.clicked .new-text.fade-out {
     opacity: 0;
-    transition: opacity 1s ease-out; /* 서서히 사라지게 설정 */
+    transition: opacity 0.7s ease-out; /* 서서히 사라지게 설정 */
 }
