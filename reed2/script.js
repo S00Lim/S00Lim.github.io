@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const isMobile = window.innerWidth <= 768; // 화면 너비가 768px 이하일 경우 모바일
+
     const words = document.querySelectorAll('.column span');
-    
+
     words.forEach(function(word) {
         // 각 단어에 대해 audio 객체 생성
         const audioSrc = word.getAttribute('data-audio');
@@ -76,18 +78,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+
+        // 모바일에서는 텍스트 변경 처리 (기존 코드와 합침)
+        if (isMobile) {
+            const originalText = word.textContent;
+
+            // 모바일에서 텍스트 내용 변경
+            if (originalText === "원본 텍스트") {
+                word.textContent = "모바일 전용 텍스트"; // 모바일에서의 새로운 텍스트
+            }
+        }
     });
-});
 
-// 모든 span 요소에 대해 클릭 이벤트 처리
-document.querySelectorAll('.column span').forEach(function(span) {
-    span.addEventListener('click', function() {
-        // 클릭된 span에 clicked 클래스 추가
-        this.classList.add('clicked');
+    // 모든 span 요소에 대해 클릭 이벤트 처리
+    document.querySelectorAll('.column span').forEach(function(span) {
+        span.addEventListener('click', function() {
+            // 클릭된 span에 clicked 클래스 추가
+            this.classList.add('clicked');
 
-        // 3초 후에 clicked 클래스를 제거하여 텍스트가 사라지도록 설정
-        setTimeout(() => {
-            this.classList.remove('clicked');
-        }, 3000); // 3초 후
+            // 3초 후에 clicked 클래스를 제거하여 텍스트가 사라지도록 설정
+            setTimeout(() => {
+                this.classList.remove('clicked');
+            }, 3000); // 3초 후
+        });
     });
 });
