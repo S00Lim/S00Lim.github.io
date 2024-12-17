@@ -1,20 +1,57 @@
+/* 기본 스타일 */
 @font-face {
     font-family: 'Reed';
     src: url('Reed-SemiboldItalic.woff2') format('woff2');
     font-weight: 400;
 }
 
+body {
+    background: white;
+    color: #493820;
+    font-family: 'Reed';
+    font-size: 50px;
+    line-height: 0.0;
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
 
+/* 다크 모드 토글 버튼 스타일 */
+#dark-mode-toggle {
+    position: absolute; /* 위치를 고정 */
+    top: 20px; /* 위에서 20px 떨어진 위치 */
+    right: 20px; /* 오른쪽에서 20px 떨어진 위치 */
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
+/* 링크 스타일 */
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
-body{
-	/* this is the outermost element on your page*/
-	background: white;
-	color: #493820;
-	font-family:'Reed';
-	font-size: 50px;
-	line-height: 0.0;
-	margin-top: 30px; /* 상단 마진 */
-	margin-left: 40px; /* 왼쪽 마진 */
-	margin-right: 40px; /* 오른쪽 마진 */
+a:hover {
+    text-decoration: underline;
+    color: inherit;
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background: #2e2e2e; /* 어두운 배경 */
+    color: #dcdcdc; /* 밝은 텍스트 */
+}
+
+body.dark-mode a {
+    color: #dcdcdc; /* 링크 색상 */
+}
+
+body.dark-mode a:hover {
+    text-decoration: underline;
+    color: #ffffff; /* 호버 시 색상 */
 }

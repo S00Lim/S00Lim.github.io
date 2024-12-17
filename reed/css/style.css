@@ -91,7 +91,7 @@ body.night-mode {
 
 /* 2단 스타일 (특화된 스타일) */
 .column:nth-child(2) {
-    padding-left: 180px; /* 왼쪽 여백 추가 */
+    padding-left: 150px; /* 왼쪽 여백 추가 */
     padding-right: 30px; /* 오른쪽 여백 추가 */
     line-height: 1.4; /* 2단에만 필요한 스타일 */
     text-align: justify;
