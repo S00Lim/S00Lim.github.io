@@ -116,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+
+    
+
     // Night Mode 버튼 처리
     const nightModeButton = document.getElementById('nightModeButton');
     
