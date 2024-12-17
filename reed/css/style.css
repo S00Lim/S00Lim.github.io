@@ -23,10 +23,140 @@ body {
     color: #333;
 }
 
+/* 다크모드일 때 "About Type" 텍스트를 숨기되 공간은 유지 */
+body.night-mode #aboutTypeButton {
+    visibility: hidden !important;
+}
 
-/* Sound 텍스트에 취소선 추가 */
+
+/* About새로운 텍스트 영역 (초기 상태에서 숨김) */
+#new-text-container {
+    display: none;
+    position: fixed;  /* 화면 하단에 고정 */
+    bottom: 0;  /* 화면 하단에 배치 */
+    left: 50%;  /* 수평 중앙에 위치 */
+    transform: translateX(-50%);  /* 수평 중앙 맞추기 */
+    text-align: center;
+    font-family: 'ABCArizonaFlare';
+    color: black;
+    max-width: 100%;
+    z-index: 9999; /* 다른 요소들 위에 위치 */
+    padding: 0px;
+    margin: 0;  /* 여백 제거 */
+
+}
+
+/* 다크 모드에서 텍스트 색상 수정 */
+body.night-mode #new-text-container {
+    color: white; /* 다크 모드에서는 텍스트가 흰색으로 보이게 */
+}
+
+
+/* 'About Type' 버튼에 호버 시 새로운 텍스트 영역 표시 */
+#aboutTypeButton:hover + #new-text-container {
+    display: block;  /* display 변경 */
+    visibility: visible; /* 보이도록 설정 */
+    transform: translateX(-50%) translateY(0);  /* 호버 시 아래로 이동 */
+}
+
+body.night-mode #new-text-container {
+    color: white; /* 다크 모드에서는 흰색으로 표시 */
+}
+
+
+
+
+
+/* 추가적으로 이 스타일이 다른 부모 요소에 영향을 미칠 수 있습니다. 부모 요소가 position: relative일 경우에도 fixed가 제대로 작동하지 않으므로, 상위 요소들이 영향을 미치지 않도록 할 수 있습니다. */
+body {
+    position: relative;
+}
+
+
+/* 상단 작은 텍스트 스타일 */
+.upper-text {
+    font-size: .9rem;
+    line-height: 1.5;
+    color: #575756;
+}
+
+/* 하단 'Reed' 텍스트 스타일 (큰 글씨) */
+.lower-text {
+    font-size: 40rem;
+    font-family: 'Reed';
+}
+
+/* 'About Type' 버튼 스타일 */
+#aboutTypeButton {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+//* 'lower-text' 텍스트가 화면 하단에 정확히 위치하도록 수정 */
+#new-text-container span.lower-text {
+    font-family: 'Reed' !important; /* 우선순위를 높임 */
+
+    /* 화면 하단에 위치시키기 */
+    position: fixed; /* 고정된 위치 */
+    bottom: 0; /* 화면 하단에 정확히 위치 */
+    left: 50%; /* 화면의 수평 중앙에 위치 */
+    transform: translateX(-50%); /* 수평 중앙 맞추기 */
+    z-index: 9999; /* 다른 요소들 위에 위치 */
+}
+
+/* 다크모드일 때 기본 텍스트 색상 */
+body.night-mode * {
+    color: white !important;
+}
+/* 라이트모드일 때 기본 텍스트 색상 */
+body.light-mode * {
+    color: #333;
+}
+
+/* 버튼의 기본 색상 */
+#aboutTypeButton {
+    transition: color 0.3s ease; /* 호버 시 색상 변화 부드럽게 */
+}
+
+/* 다크모드 상태에서 버튼 호버 시 색상 변경 */
+body.night-mode #aboutTypeButton:hover {
+    color: black; /* 다크모드일 때 버튼 색상 */
+}
+
+/* 라이트모드 상태에서 버튼 호버 시 색상 변경 */
+body.light-mode #aboutTypeButton:hover {
+    color: #f4f4f4; /* 라이트모드일 때 버튼 색상 */
+}
+
+
+
+/* 새로 나타날 텍스트 스타일 */
+.column span.new-text {
+    font-size: 3rem; /* 글자 크기 */
+    opacity: 0; /* 초기에는 숨겨놓음 */
+    transition: opacity 1s ease-in-out; /* 부드럽게 나타나도록 설정 */
+}
+
+/* 새로운 텍스트가 보이도록 설정하는 스타일 */
+.column span.new-text.show {
+    opacity: 1; /* 보이게 설정 */
+}
+
+/* 호버 시 새로운 텍스트 보이기 */
+.column span:hover .new-text {
+    opacity: 1; /* 새로운 텍스트를 보이게 설정 */
+}
+
+/* 괄호는 그대로 두고, 'Sound' 텍스트에만 opacity 적용 */
 #soundButton[data-sound="off"] {
-    text-decoration: line-through;
+    opacity: 0.25; /* 소리가 꺼졌을 때 텍스트만 흐릿하게 만듦 */
+}
+
+/* 괄호는 투명도를 적용하지 않음 */
+.bracket {
+    opacity: 1; /* 괄호는 투명도 변경 없이 유지 */
 }
 
 

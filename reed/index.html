@@ -9,9 +9,9 @@
 <body>
     <div class="container">
    <!-- 1단 : Sound 버튼 추가 -->
-        <div class="column">
-            <span id="soundButton" data-sound="on">(Sound)</span>
-        </div>
+<div class="column">
+    <span class="bracket">[</span><span id="soundButton" data-sound="on">Sound</span><span class="bracket">]</span>
+</div>
         
         <!-- 2단 -->
         <div class="column">
@@ -129,13 +129,23 @@
         </div>
 
 
-        <!-- 4단 -->
-        <div class="column">About Type</div>
+  <!-- 4단 -->
+ <div class="column" id="aboutTypeButton">About Type</div>
+
+<!-- 새로 나타나는 텍스트를 위한 영역 -->
+<div id="new-text-container">
+  <div class="upper-text">
+    Reed is a graceful, organic typeface inspired by the gentle motion of reeds swaying in the wind. Designed specifically for title settings at a large scale of 150 points. With its fluid, natural curves, Reed embodies a subtle yet captivating elegance that is ideal for literary and artistic contexts, such as poetry collections or contemplative essays. The typeface’s soft, elongated lines suggest a sense of calm and quietude, allowing it to pair harmoniously with serene or philosophical themes.
+  </div>
+  <div class="lower-text">Reed</div>
+</div>
 
             <div class="column">
             <!-- Night/Light 모드 버튼 추가 -->
             <button id="nightModeButton">Night</button>
         </div>
+
+
 
     <!-- 새로 나타나는 텍스트를 위한 영역 -->
     <div id="new-text-container"></div>

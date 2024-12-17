@@ -128,6 +128,74 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+
+
+
+
+
+
+const aboutTypeButton = document.getElementById('aboutTypeButton');
+const columns = document.querySelectorAll('.column span');
+
+// 다크모드 감지
+const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+// 다크모드 여부에 따른 색상 변경 함수
+function updateColorScheme() {
+    const isDarkMode = darkModeMediaQuery.matches;
+
+    columns.forEach(column => {
+        // 텍스트 색상 설정 (다크모드 / 라이트모드에 맞게)
+        if (isDarkMode) {
+            column.style.color = 'white';  // 다크모드일 때 기본 텍스트 색상
+        } else {
+            column.style.color = '#333';  // 라이트모드일 때 기본 텍스트 색상
+        }
+    });
+}
+
+// 마우스 호버 시 색상 변경
+aboutTypeButton.addEventListener('mouseenter', function() {
+    const isDarkMode = darkModeMediaQuery.matches; // 현재 다크모드인지 확인
+
+    columns.forEach(column => {
+        // 다크모드일 때
+        if (isDarkMode) {
+            column.style.color = 'black';  // 다크모드에서 호버 시 텍스트 색상 변경
+        } else {
+            column.style.color = '#f4f4f4';  // 라이트모드에서 호버 시 텍스트 색상 변경
+        }
+    });
+});
+
+// 마우스가 벗어났을 때 기본 색상으로 복원
+aboutTypeButton.addEventListener('mouseleave', function() {
+    const isDarkMode = darkModeMediaQuery.matches; // 현재 다크모드인지 확인
+
+    columns.forEach(column => {
+        // 다크모드일 때
+        if (isDarkMode) {
+            column.style.color = 'white';  // 다크모드에서 기본 텍스트 색상
+        } else {
+            column.style.color = '#333';  // 라이트모드에서 기본 텍스트 색상
+        }
+    });
+});
+
+// 다크모드가 변경될 때마다 색상 업데이트
+darkModeMediaQuery.addEventListener('change', updateColorScheme);
+
+// 초기 로드시 색상 설정
+updateColorScheme();
+
+
+
+
+
+
+
+
+
     // 반딧불이 생성 코드
     let fireflies = [];
     const maxFireflies = 15;
@@ -154,3 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setInterval(createFirefly, 300);
 });
+
+
+
+
