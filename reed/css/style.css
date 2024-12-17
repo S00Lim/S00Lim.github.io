@@ -136,14 +136,9 @@ body.night-mode {
     font-family: 'Reed';
     font-size: 47rem; /* 글자 크기 */
     opacity: 0; /* 초기에는 숨겨놓음 */
-        transition: opacity 2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.5s ease-in-out; /* 부드러운 곡선 효과 */
+        transition: opacity 2s cubic-bezier(0.25, 1, 0.5, 1), transform 2s ease-in-out; /* 부드러운 곡선 효과 */
 
-    transition: opacity 0.9s ease-in-out; /* 부드럽게 나타나도록 설정 */
-
-    /* 새로운 텍스트가 사라지는 스타일 */
-.column span.new-text.fade-out {
-    opacity: 0; /* 사라지게 설정 */
-}
+    transition: opacity 1s ease-in-out; /* 부드럽게 나타나도록 설정 */
     
     /* 화면 하단에 위치시키기 */
     position: fixed; /* 고정된 위치 */
@@ -168,7 +163,7 @@ body.night-mode .new-text {
 
 /* 호버 시 새로운 텍스트 보이기 */
 .column span:hover .new-text {
-    opacity: .8; /* 새로운 텍스트를 보이게 설정 */
+    opacity: .75; /* 새로운 텍스트를 보이게 설정 */
 }
 /* 반딧불이 기본 스타일 */
 .firefly {
