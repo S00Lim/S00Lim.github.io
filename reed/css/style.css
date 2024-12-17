@@ -23,12 +23,51 @@ body {
     color: #333;
 }
 
+
+/* 버튼 스타일 */
+#nightModeButton {
+    background: none; /* 배경 제거 */
+    border: none; /* 테두리 제거 */
+    color: inherit; /* 텍스트 색상은 부모로부터 상속 */
+    font-family: 'ABCArizonaFlare'; /* 전체 웹사이트 폰트와 동일한 폰트 */
+    font-size: 0.8rem; /* 버튼 텍스트 크기 */
+    cursor: pointer; /* 클릭 가능한 느낌 */
+    transition: color 0.3s, text-decoration 0.3s; /* 클릭 시 부드러운 변화 효과 */
+}
+
+/* 버튼 호버 시 스타일 */
+#nightModeButton:hover {
+    text-decoration: underline; /* 호버 시에도 밑줄 유지 */
+    color: inherit; /* 텍스트 색상 변경 */
+}
+
+/* 다크 모드 스타일 */
+body.night-mode {
+    background-color: black; /* 어두운 배경 색 */
+    color: white; /* 밝은 텍스트 색 */
+}
+
+.column.night-mode {
+    color: white; /* 각 열의 텍스트 색상 */
+}
+
+#nightModeButton.night-mode {
+    background-color: #444; /* 어두운 버튼 배경 */
+    color: white; /* 버튼 텍스트 색 */
+}
+
+#nightModeButton.night-mode:hover {
+    background-color: #666; /* 버튼 hover 시 색상 */
+}
+
+
+
 /* 그리드 컨테이너 */
 .container {
     display: grid;
-    grid-template-columns: 1fr 14fr 1fr; /* 가운데 셀을 넓게 설정 */
-    column-gap: 300px; /* 간격을 넓게 설정 */
-    padding: 20px;
+    grid-template-columns: 1fr 14fr 1fr 1fr; /* 가운데 셀을 넓게 설정 */
+    column-gap: 100px; /* 간격을 넓게 설정 */
+    padding: 10px;
     max-width: 2000px;
     margin: 0 auto;
 }
@@ -52,10 +91,18 @@ body {
 
 /* 2단 스타일 (특화된 스타일) */
 .column:nth-child(2) {
-    padding-left: 30px; /* 왼쪽 여백 추가 */
+    padding-left: 180px; /* 왼쪽 여백 추가 */
     padding-right: 30px; /* 오른쪽 여백 추가 */
     line-height: 1.4; /* 2단에만 필요한 스타일 */
     text-align: justify;
+}
+
+
+/* For the 'Night' mode 새로운 3번째 열에 대한 스타일 */
+.column:nth-child(4) {
+    font-style: italic;
+    text-align: left; /* 왼쪽 정렬로 변경 */
+    white-space: nowrap; /* 줄바꿈 방지 */
 }
 
 /* 3단 스타일 (특화된 스타일) */
@@ -83,7 +130,9 @@ body {
     font-family: 'Reed';
     font-size: 47rem; /* 글자 크기 */
     opacity: 0; /* 초기에는 숨겨놓음 */
-    transition: opacity 0.3s ease-in-out; /* 부드럽게 나타나도록 설정 */
+        transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1), transform 1.5s ease-in-out; /* 부드러운 곡선 효과 */
+
+    transition: opacity 0.9s ease-in-out; /* 부드럽게 나타나도록 설정 */
     
     /* 화면 하단에 위치시키기 */
     position: fixed; /* 고정된 위치 */
@@ -95,12 +144,53 @@ body {
 }
 
 
+/* 다크 모드가 활성화된 상태에서 .new-text 요소의 색상 변경 */
+body.night-mode .new-text {
+    color: white; /* 흰색으로 변경 */
+}
+
+
 /* 새로운 텍스트가 보이도록 설정하는 스타일 */
 .column span.new-text.show {
-    opacity: 1; /* 보이게 설정 */
+    opacity: .8; /* 보이게 설정 */
 }
 
 /* 호버 시 새로운 텍스트 보이기 */
 .column span:hover .new-text {
-    opacity: 1; /* 새로운 텍스트를 보이게 설정 */
+    opacity: .8; /* 새로운 텍스트를 보이게 설정 */
+}
+/* 반딧불이 기본 스타일 */
+.firefly {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background-color: white;
+    border-radius: 50%;
+    animation: move 4s infinite, glow 1.5s infinite ease-in-out;
+}
+
+/* 반딧불이의 움직임 애니메이션 */
+@keyframes move {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(15px, 15px); /* 범위 좁힘 */
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+/* 반딧불이의 빛나는 애니메이션 */
+@keyframes glow {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
