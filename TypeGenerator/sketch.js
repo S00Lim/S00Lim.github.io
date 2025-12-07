@@ -6,14 +6,14 @@ let centers = [];
 let textContent = "A";
 
 // 텍스트 레이아웃 컨트롤
-let textSizeVal = 500;      // 글자 크기
-let letterSpacingVal = 40;  // 글자 간격
-let lineLeadingVal = 80;    // 줄 간격
+let textSizeVal = 800;
+let letterSpacingVal = 40;
+let lineLeadingVal = 80;
 
 // 레이아웃 모드
-let layoutMode = "Block";   // Block / Circle / Arc
-let layoutRadius = 250;     // Circle/Arc 반지름
-let arcSpanDeg = 180;       // Arc 스팬(도 단위)
+let layoutMode = "Block";
+let layoutRadius = 250;
+let arcSpanDeg = 180;
 
 // Ripple 관련
 let radiusMin = 13;
@@ -24,63 +24,57 @@ let spacing = 70;
 let rippleProgress = 1;
 let rippleSpeed = 0.02;
 let easingMode = "Linear";
-let rippleDirection = "Inside-Out";  // Inside-Out / Outside-In
+let rippleDirection = "Inside-Out";
 
 // 애니메이션 모드
-let animMode = "Manual";   // Manual / Loop / PingPong
+let animMode = "Manual";  // Manual / Loop / PingPong
 let animating = false;
 let pingForward = true;
 
 // 스타일 관련
 let strokeW = 1.5;
 let colorPalette = "Black";
-let perCharColor = false;   // 글자마다 색 다르게
-let shapeMode = "Circle";   // Circle / LineX / LineY / Rect / Triangle / Dot
-let drawMode = "Stroke";    // Stroke / Fill
+let perCharColor = false;
+let shapeMode = "Circle";
+let drawMode = "Stroke";
 
 // 블렌딩 모드
-let blendModeName = "Normal";  // Normal / Add / Multiply / Screen / Lightest / Darkest
+let blendModeName = "Normal"; // Normal / Add / Multiply / Screen / Lightest / Darkest
 
 // 배경색
 let bgColor;
 let bgPicker;
 
+// 필터 옵션
+let blurOn = false;
+let noiseOn = false;
+let blurCheckbox, noiseCheckbox;
+
 // A~Z 테스트용
 let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let currentIndex = 0;
-
-// 캔버스 참조
 let canvas;
 
 // ===== UI 요소 =====
 let panelDiv;
+let panelToggleBtn;
+let panelVisible = true;
 
 // 텍스트 입력
 let textArea;
-let applyButton;
 let exportButton;
 
-// 아코디언: Text Layout
-let layoutHeaderDiv;
-let layoutBodyDiv;
-let layoutOpen = true;
-
-// 아코디언: Ripple Style
-let styleHeaderDiv;
-let styleBodyDiv;
-let styleOpen = true;
-
-// 레이아웃 관련 UI
+// 레이아웃 UI
 let layoutSelect;
 let layoutRadiusRow;
 let arcSpanRow;
 
-// 슬라이더/인풋 row들
+// 슬라이더 Rows
 let radiusMinRow, radiusMaxRow, stepRow, spacingRow;
 let strokeWRow, speedRow;
 let textSizeRow, letterSpacingRow, leadingRow;
 
-// 팔레트 & 이징 & 방향 & per-char & anim 모드 & shape & drawmode & blend
+// 기타 컨트롤
 let paletteSelect;
 let easingSelect;
 let directionSelect;
@@ -89,8 +83,6 @@ let animSelect;
 let shapeSelect;
 let drawModeSelect;
 let blendModeSelect;
-
-// 타임라인 슬라이더
 let timelineSlider;
 
 function preload() {
@@ -98,93 +90,88 @@ function preload() {
 }
 
 function setup() {
-  // 캔버스 오른쪽, 패널 왼쪽
-  canvas = createCanvas(800, 800);
-  canvas.position(280, 10);
-
-  noFill();
-  stroke(0, 70);
-  strokeWeight(strokeW);
+  canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0, 0);
+  canvas.style('display', 'block');
 
   bgColor = color(255);
 
-  // ===== 왼쪽 패널 박스 =====
+  // ===== 패널 토글 버튼 =====
+  panelToggleBtn = createButton("▼");
+  panelToggleBtn.position(10, 10);
+  panelToggleBtn.style("position", "absolute");
+  panelToggleBtn.style("z-index", "20");
+  panelToggleBtn.style("font-size", "11px");
+  panelToggleBtn.style("padding", "3px 8px");
+  panelToggleBtn.mousePressed(togglePanelVisibility);
+
+  // ===== 패널 박스 =====
   panelDiv = createDiv();
-  panelDiv.position(10, 10);
-  panelDiv.size(260, 780);
+  panelDiv.position(10, 40);
+  panelDiv.size(260, windowHeight - 50);
   panelDiv.style("background", "#f7f7f7");
   panelDiv.style("border", "1px solid #ddd");
   panelDiv.style("padding", "12px");
   panelDiv.style("box-shadow", "0 2px 6px rgba(0,0,0,0.08)");
   panelDiv.style("font-family", "sans-serif");
   panelDiv.style("font-size", "12px");
-  panelDiv.style("box-sizing", "border-box");
+  panelDiv.style("overflow-y", "auto");
+  panelDiv.style("position", "absolute");
+  panelDiv.style("z-index", "10");
 
-  // 타이틀
-  let titleDiv = createDiv("Type Ripple Controls");
-  titleDiv.parent(panelDiv);
-  titleDiv.style("font-weight", "bold");
-  titleDiv.style("margin-bottom", "8px");
-  titleDiv.style("font-size", "13px");
-
-  // Export 버튼
+  // ===== Save 버튼 =====
   let exportRow = createDiv();
   exportRow.parent(panelDiv);
   exportRow.style("margin-bottom", "8px");
 
-  exportButton = createButton("Export PNG");
+  exportButton = createButton("Save");
   exportButton.parent(exportRow);
   exportButton.mousePressed(exportPNG);
   exportButton.style("font-size", "11px");
   exportButton.style("padding", "4px 8px");
 
-  // ===== 텍스트 입력 영역 =====
-  let textRow = createDiv();
-  textRow.parent(panelDiv);
-  textRow.style("margin-bottom", "8px");
+  // ===================== TEXT SECTION =====================
+  let layoutTitle = createDiv("Text");
+  layoutTitle.parent(panelDiv);
+  layoutTitle.style("margin-top", "10px");
+  layoutTitle.style("padding", "4px 2px");
+  layoutTitle.style("font-weight", "bold");
+  layoutTitle.style("border-bottom", "1px solid #ddd");
 
-  let textLabel = createSpan("Text:");
-  textLabel.parent(textRow);
-  textLabel.style("display", "block");
-  textLabel.style("margin-bottom", "4px");
+  let layoutBodyDiv = createDiv();
+  layoutBodyDiv.parent(panelDiv);
+  layoutBodyDiv.style("margin-top", "8px");
+
+  // 🔤 텍스트 입력창 (섹션 안, Size 위)
+  let textRow = createDiv();
+  textRow.parent(layoutBodyDiv);
+  textRow.style("margin-bottom", "8px");
 
   textArea = createElement('textarea', textContent);
   textArea.parent(textRow);
   textArea.style("width", "100%");
-  textArea.style("height", "60px");
+  textArea.style("height", "26px"); // 여기 숫자로 높이 조절 가능
   textArea.style("font-size", "11px");
   textArea.style("resize", "vertical");
 
-  applyButton = createButton('Apply Text');
-  applyButton.parent(textRow);
-  applyButton.style("margin-top", "4px");
-  applyButton.mousePressed(applyTypedText);
+  // 입력 즉시 반영
+  textArea.input(() => {
+    textContent = textArea.value();
+    buildAllText();
+  });
 
-  // ===== 아코디언 1: Text Layout =====
-  layoutHeaderDiv = createDiv("▼ Text Layout");
-  layoutHeaderDiv.parent(panelDiv);
-  layoutHeaderDiv.style("margin-top", "10px");
-  layoutHeaderDiv.style("padding", "6px 4px");
-  layoutHeaderDiv.style("background", "#e5e5e5");
-  layoutHeaderDiv.style("cursor", "pointer");
-  layoutHeaderDiv.style("user-select", "none");
-  layoutHeaderDiv.mousePressed(toggleLayoutAccordion);
-
-  layoutBodyDiv = createDiv();
-  layoutBodyDiv.parent(panelDiv);
-  layoutBodyDiv.style("margin-top", "8px");
-
+  // 사이즈 / 트래킹 / 리딩
   textSizeRow = createSliderRow(
     "Size",
-    200, 800,
+    50, 800,
     textSizeVal,
     (v) => { textSizeVal = v; },
     layoutBodyDiv
   );
 
   letterSpacingRow = createSliderRow(
-    "Letter Sp.",
-    0, 200,
+    "Tracking",
+    -200, 200,
     letterSpacingVal,
     (v) => { letterSpacingVal = v; },
     layoutBodyDiv
@@ -198,15 +185,15 @@ function setup() {
     layoutBodyDiv
   );
 
-  // 레이아웃 모드 셀렉트
+  // 레이아웃 모드
   let lmRow = createDiv();
   lmRow.parent(layoutBodyDiv);
-  lmRow.style("margin-top", "6px");
+  lmRow.style("margin-top", "4px");
 
   let lmLabel = createSpan("Layout:");
   lmLabel.parent(lmRow);
-  lmLabel.style("display", "inline-block");
   lmLabel.style("width", "70px");
+  lmLabel.style("display", "inline-block");
 
   layoutSelect = createSelect();
   layoutSelect.parent(lmRow);
@@ -214,16 +201,13 @@ function setup() {
   layoutSelect.option("Circle");
   layoutSelect.option("Arc");
   layoutSelect.value(layoutMode);
-  layoutSelect.changed(() => {
-    layoutMode = layoutSelect.value();
-    buildAllText();
-  });
+  layoutSelect.changed(() => buildAllText());
 
   layoutRadiusRow = createSliderRow(
     "Radius",
     50, 600,
     layoutRadius,
-    (v) => { layoutRadius = v; },
+    v => layoutRadius = v,
     layoutBodyDiv
   );
 
@@ -231,82 +215,46 @@ function setup() {
     "ArcSpan",
     30, 330,
     arcSpanDeg,
-    (v) => { arcSpanDeg = v; },
+    v => arcSpanDeg = v,
     layoutBodyDiv
   );
 
-  // ===== 아코디언 2: Ripple Style =====
-  styleHeaderDiv = createDiv("▼ Ripple Style");
-  styleHeaderDiv.parent(panelDiv);
-  styleHeaderDiv.style("margin-top", "10px");
-  styleHeaderDiv.style("padding", "6px 4px");
-  styleHeaderDiv.style("background", "#e5e5e5");
-  styleHeaderDiv.style("cursor", "pointer");
-  styleHeaderDiv.style("user-select", "none");
-  styleHeaderDiv.mousePressed(toggleStyleAccordion);
+  // ===================== STYLE SECTION =====================
+  let styleTitle = createDiv("Style");
+  styleTitle.parent(panelDiv);
+  styleTitle.style("margin-top", "10px");
+  styleTitle.style("padding", "4px 2px");
+  styleTitle.style("font-weight", "bold");
+  styleTitle.style("border-bottom", "1px solid #ddd");
 
-  styleBodyDiv = createDiv();
+  let styleBodyDiv = createDiv();
   styleBodyDiv.parent(panelDiv);
   styleBodyDiv.style("margin-top", "8px");
 
-  radiusMinRow = createSliderRow(
-    "radiusMin",
-    1, 80,
-    radiusMin,
-    (v) => { radiusMin = v; },
-    styleBodyDiv
-  );
-
-  radiusMaxRow = createSliderRow(
-    "radiusMax",
-    50, 250,
-    radiusMax,
-    (v) => { radiusMax = v; },
-    styleBodyDiv
-  );
-
-  stepRow = createSliderRow(
-    "step",
-    5, 80,
-    step,
-    (v) => { step = v; },
-    styleBodyDiv
-  );
-
-  spacingRow = createSliderRow(
-    "Spacing",
-    20, 200,
-    spacing,
-    (v) => { spacing = v; },
-    styleBodyDiv
-  );
-
-  strokeWRow = createSliderRow(
-    "StrokeW",
-    0.5, 8,
-    strokeW,
-    (v) => { strokeW = v; },
-    styleBodyDiv
-  );
+  radiusMinRow = createSliderRow("Min", 1, 80, radiusMin, v => radiusMin = v, styleBodyDiv);
+  radiusMaxRow = createSliderRow("Max", 10, 250, radiusMax, v => radiusMax = v, styleBodyDiv);
+  stepRow      = createSliderRow("Step", 5, 80, step, v => step = v, styleBodyDiv);
+  spacingRow   = createSliderRow("Point", 20, 200, spacing, v => spacing = v, styleBodyDiv);
+  strokeWRow   = createSliderRow("Stroke", 0.5, 8, strokeW, v => strokeW = v, styleBodyDiv);
 
   speedRow = createSliderRow(
     "Speed",
     0.005, 0.08,
     rippleSpeed,
-    (v) => { rippleSpeed = v; },
+    v => rippleSpeed = v,
     styleBodyDiv,
     0.001
   );
 
-  // Anim Mode
+  // ===== Anim Mode =====
   let animRow = createDiv();
   animRow.parent(styleBodyDiv);
   animRow.style("margin-top", "6px");
 
   let animLabel = createSpan("Anim:");
   animLabel.parent(animRow);
-  animLabel.style("display", "inline-block");
   animLabel.style("width", "70px");
+  animLabel.style("display", "inline-block");
 
   animSelect = createSelect();
   animSelect.parent(animRow);
@@ -320,200 +268,195 @@ function setup() {
     pingForward = true;
   });
 
-  // Timeline 스크러버
+  // ===== Timeline =====
   let tlRow = createDiv();
   tlRow.parent(styleBodyDiv);
   tlRow.style("margin-top", "6px");
 
   let tlLabel = createSpan("Timeline:");
   tlLabel.parent(tlRow);
-  tlLabel.style("display", "inline-block");
   tlLabel.style("width", "70px");
+  tlLabel.style("display", "inline-block");
 
   timelineSlider = createSlider(0, 1, rippleProgress, 0.001);
   timelineSlider.parent(tlRow);
   timelineSlider.style("width", "100px");
+  timelineSlider.style("accent-color", "#555");
   timelineSlider.input(() => {
     rippleProgress = timelineSlider.value();
+    animating = false;
     animMode = "Manual";
     animSelect.value("Manual");
-    animating = false;
   });
 
-  // 색상 팔레트 셀렉트
+  // ===== Color Palette =====
   let paletteRow = createDiv();
   paletteRow.parent(styleBodyDiv);
   paletteRow.style("margin-top", "6px");
 
   let paletteLabel = createSpan("Color:");
   paletteLabel.parent(paletteRow);
-  paletteLabel.style("display", "inline-block");
   paletteLabel.style("width", "70px");
+  paletteLabel.style("display", "inline-block");
 
   paletteSelect = createSelect();
   paletteSelect.parent(paletteRow);
-  paletteSelect.option("Black");
-  paletteSelect.option("Gray");
-  paletteSelect.option("Red");
-  paletteSelect.option("Blue");
-  paletteSelect.option("Rainbow");
+  ["Black","Gray","Red","Blue","Rainbow","Neon","Candy","PastelGlow"].forEach(c => paletteSelect.option(c));
   paletteSelect.value(colorPalette);
-  paletteSelect.changed(() => {
-    colorPalette = paletteSelect.value();
+  paletteSelect.changed(() => colorPalette = paletteSelect.value());
+
+  // 🔘 Filter 체크 (Blur / Noise) — Color 밑에
+  let filterRow = createDiv();
+  filterRow.parent(styleBodyDiv);
+  filterRow.style("margin-top", "4px");
+
+  let filterLabel = createSpan("Filter:");
+  filterLabel.parent(filterRow);
+  filterLabel.style("width", "70px");
+  filterLabel.style("display", "inline-block");
+
+  // Blur 체크박스
+  blurCheckbox = createCheckbox('Blur', blurOn);
+  blurCheckbox.parent(filterRow);
+  blurCheckbox.style("margin-right", "8px");
+  blurCheckbox.changed(() => {
+    blurOn = blurCheckbox.checked();
   });
 
-  // Shape 모드 셀렉트
+  // Noise 체크박스
+  noiseCheckbox = createCheckbox('Noise', noiseOn);
+  noiseCheckbox.parent(filterRow);
+  noiseCheckbox.changed(() => {
+    noiseOn = noiseCheckbox.checked();
+  });
+
+  // ===== Shape =====
   let shapeRow = createDiv();
   shapeRow.parent(styleBodyDiv);
-  shapeRow.style("margin-top", "6px");
+  shapeRow.style("margin-top", "4px");
 
   let shapeLabel = createSpan("Shape:");
   shapeLabel.parent(shapeRow);
-  shapeLabel.style("display", "inline-block");
   shapeLabel.style("width", "70px");
+  shapeLabel.style("display", "inline-block");
 
   shapeSelect = createSelect();
   shapeSelect.parent(shapeRow);
-  shapeSelect.option("Circle");
-  shapeSelect.option("LineX");
-  shapeSelect.option("LineY");
-  shapeSelect.option("Rect");
-  shapeSelect.option("Triangle");
-  shapeSelect.option("Dot");
+  ["Circle","LineX","LineY","Rect","Triangle","Dot"].forEach(s => shapeSelect.option(s));
   shapeSelect.value(shapeMode);
-  shapeSelect.changed(() => {
-    shapeMode = shapeSelect.value();
-  });
+  shapeSelect.changed(() => shapeMode = shapeSelect.value());
 
-  // Draw 모드 (Stroke / Fill)
+  // ===== Draw Mode =====
   let drawRow = createDiv();
   drawRow.parent(styleBodyDiv);
-  drawRow.style("margin-top", "6px");
+  drawRow.style("margin-top", "4px");
 
   let drawLabel = createSpan("Draw:");
   drawLabel.parent(drawRow);
-  drawLabel.style("display", "inline-block");
   drawLabel.style("width", "70px");
+  drawLabel.style("display", "inline-block");
 
   drawModeSelect = createSelect();
   drawModeSelect.parent(drawRow);
-  drawModeSelect.option("Stroke");
-  drawModeSelect.option("Fill");
+  ["Stroke","Fill"].forEach(s => drawModeSelect.option(s));
   drawModeSelect.value(drawMode);
-  drawModeSelect.changed(() => {
-    drawMode = drawModeSelect.value();
-  });
+  drawModeSelect.changed(() => drawMode = drawModeSelect.value());
 
-  // Blend 모드
+  // ===== Blend Mode =====
   let blendRow = createDiv();
   blendRow.parent(styleBodyDiv);
-  blendRow.style("margin-top", "6px");
+  blendRow.style("margin-top", "4px");
 
   let blendLabel = createSpan("Blend:");
   blendLabel.parent(blendRow);
-  blendLabel.style("display", "inline-block");
   blendLabel.style("width", "70px");
+  blendLabel.style("display", "inline-block");
 
   blendModeSelect = createSelect();
   blendModeSelect.parent(blendRow);
-  blendModeSelect.option("Normal");
-  blendModeSelect.option("Add");
-  blendModeSelect.option("Multiply");
-  blendModeSelect.option("Screen");
-  blendModeSelect.option("Lightest");
-  blendModeSelect.option("Darkest");
+  ["Normal","Add","Multiply","Screen","Lightest","Darkest"].forEach(m => blendModeSelect.option(m));
   blendModeSelect.value(blendModeName);
   blendModeSelect.changed(() => {
     blendModeName = blendModeSelect.value();
   });
 
-  // Background Color
+  // ===== BG Color =====
   let bgRow = createDiv();
   bgRow.parent(styleBodyDiv);
-  bgRow.style("margin-top", "6px");
+  bgRow.style("margin-top", "4px");
 
   let bgLabel = createSpan("BG:");
   bgLabel.parent(bgRow);
-  bgLabel.style("display", "inline-block");
   bgLabel.style("width", "70px");
+  bgLabel.style("display", "inline-block");
 
-  bgPicker = createColorPicker('#ffffff');
+  bgPicker = createColorPicker("#ffffff");
   bgPicker.parent(bgRow);
-  bgPicker.input(() => {
-    bgColor = bgPicker.color();
-  });
+  bgPicker.input(() => bgColor = bgPicker.color());
 
-  // Direction 셀렉트
+  // ===== Direction =====
   let dirRow = createDiv();
   dirRow.parent(styleBodyDiv);
-  dirRow.style("margin-top", "6px");
+  dirRow.style("margin-top", "4px");
 
   let dirLabel = createSpan("Direction:");
   dirLabel.parent(dirRow);
-  dirLabel.style("display", "inline-block");
   dirLabel.style("width", "70px");
+  dirLabel.style("display", "inline-block");
 
   directionSelect = createSelect();
   directionSelect.parent(dirRow);
   directionSelect.option("Inside-Out");
   directionSelect.option("Outside-In");
   directionSelect.value(rippleDirection);
-  directionSelect.changed(() => {
-    rippleDirection = directionSelect.value();
-  });
+  directionSelect.changed(() => rippleDirection = directionSelect.value());
 
-  // Per-char 색상
+  // ===== Per-char =====
   let perCharRow = createDiv();
   perCharRow.parent(styleBodyDiv);
   perCharRow.style("margin-top", "4px");
 
   let perCharLabel = createSpan("Per-char:");
   perCharLabel.parent(perCharRow);
-  perCharLabel.style("display", "inline-block");
   perCharLabel.style("width", "70px");
+  perCharLabel.style("display", "inline-block");
 
   perCharCheckbox = createCheckbox("", perCharColor);
   perCharCheckbox.parent(perCharRow);
-  perCharCheckbox.changed(() => {
-    perCharColor = perCharCheckbox.checked();
-  });
+  perCharCheckbox.changed(() => perCharColor = perCharCheckbox.checked());
 
-  // Easing 셀렉트
+  // ===== Easing =====
   let easingRow = createDiv();
   easingRow.parent(styleBodyDiv);
-  easingRow.style("margin-top", "6px");
+  easingRow.style("margin-top", "4px");
 
   let easingLabel = createSpan("Easing:");
   easingLabel.parent(easingRow);
-  easingLabel.style("display", "inline-block");
   easingLabel.style("width", "70px");
+  easingLabel.style("display", "inline-block");
 
   easingSelect = createSelect();
   easingSelect.parent(easingRow);
-  easingSelect.option("Linear");
-  easingSelect.option("EaseInOutQuad");
-  easingSelect.option("EaseOutCubic");
+  ["Linear","EaseInOutQuad","EaseOutCubic"].forEach(e => easingSelect.option(e));
   easingSelect.value(easingMode);
-  easingSelect.changed(() => {
-    easingMode = easingSelect.value();
-  });
+  easingSelect.changed(() => easingMode = easingSelect.value());
 
   // 초기 텍스트 빌드
   buildAllText();
 }
 
 function draw() {
-  // 🔧 이전 프레임의 블렌드 상태 초기화
+  // 먼저 기본 블렌드로 초기화
   blendMode(BLEND);
   background(bgColor);
 
-  // 🔧 여기서부터 선택한 블렌드 모드 적용
+  // 선택된 블렌드 모드 적용
   let modeConst = BLEND;
-  if (blendModeName === "Add") modeConst = ADD;
+  if (blendModeName === "Add")      modeConst = ADD;
   else if (blendModeName === "Multiply") modeConst = MULTIPLY;
-  else if (blendModeName === "Screen") modeConst = SCREEN;
+  else if (blendModeName === "Screen")   modeConst = SCREEN;
   else if (blendModeName === "Lightest") modeConst = LIGHTEST;
-  else if (blendModeName === "Darkest") modeConst = DARKEST;
+  else if (blendModeName === "Darkest")  modeConst = DARKEST;
   blendMode(modeConst);
 
   let eased = applyEasing(rippleProgress, easingMode);
@@ -522,7 +465,7 @@ function draw() {
     drawRipple(c, eased);
   }
 
-  // 애니메이션 모드 적용
+  // 애니메이션 모드
   if (animMode === "Manual") {
     if (animating) {
       rippleProgress += rippleSpeed;
@@ -549,36 +492,55 @@ function draw() {
     }
   }
 
-  // 타임라인 UI 동기화
-  if (timelineSlider) {
-    timelineSlider.value(rippleProgress);
+  if (timelineSlider) timelineSlider.value(rippleProgress);
+
+  // ===== 필터 적용 (전체 그린 뒤) =====
+  if (blurOn) {
+    // 살짝만 번지는 느낌
+    filter(BLUR, 2);
+  }
+
+  if (noiseOn) {
+    addNoiseOverlay();
   }
 }
 
-// ===== 아코디언 토글 =====
-function toggleLayoutAccordion() {
-  layoutOpen = !layoutOpen;
-  if (layoutOpen) {
-    layoutBodyDiv.style("display", "block");
-    layoutHeaderDiv.html("▼ Text Layout");
-  } else {
-    layoutBodyDiv.style("display", "none");
-    layoutHeaderDiv.html("▶ Text Layout");
+// ===== 노이즈 오버레이 (필름 그레인 느낌) =====
+function addNoiseOverlay() {
+  push();
+  // 노이즈는 그냥 위에 입히는 느낌이라 기본 블렌드로
+  blendMode(BLEND);
+  noFill();
+  strokeWeight(1);
+
+  // 🔥 노이즈 양 크게 올림
+  // 숫자 작을수록 → 더 많은 점
+  let grainCount = (width * height) / 50;  
+  grainCount = constrain(grainCount, 15000, 60000);
+
+  for (let i = 0; i < grainCount; i++) {
+    let x = random(width);
+    let y = random(height);
+
+    // 밝기 범위 더 넓게, 어두운 점도 섞이게
+    let v = random(80, 255);
+
+    // 🔥 투명도도 올림 (18 → 45 정도)
+    stroke(v, 45);
+    point(x, y);
   }
+
+  pop();
 }
 
-function toggleStyleAccordion() {
-  styleOpen = !styleOpen;
-  if (styleOpen) {
-    styleBodyDiv.style("display", "block");
-    styleHeaderDiv.html("▼ Ripple Style");
-  } else {
-    styleBodyDiv.style("display", "none");
-    styleHeaderDiv.html("▶ Ripple Style");
-  }
+// ===== 패널 토글 =====
+function togglePanelVisibility() {
+  panelVisible = !panelVisible;
+  panelDiv.style("display", panelVisible ? "block" : "none");
+  panelToggleBtn.html(panelVisible ? "▼" : "▲");
 }
 
-// ===== 슬라이더 + 숫자 인풋 한 줄 생성 =====
+// ===== 슬라이더 + 숫자 인풋 =====
 function createSliderRow(labelText, min, max, initialValue, onChange, parentDiv, stepOverride) {
   let row = createDiv();
   row.parent(parentDiv);
@@ -593,13 +555,13 @@ function createSliderRow(labelText, min, max, initialValue, onChange, parentDiv,
   slider.parent(row);
   slider.style("width", "100px");
   slider.style("margin", "0 6px");
+  slider.elt.style.accentColor = "#555555"; // 다크 그레이 슬라이더
 
   let numberInput = createInput(initialValue.toString());
   numberInput.parent(row);
   numberInput.size(40);
   numberInput.attribute("type", "number");
   numberInput.style("font-size", "11px");
-  numberInput.style("padding", "1px 2px");
 
   slider.input(() => {
     let v = slider.value();
@@ -621,32 +583,17 @@ function createSliderRow(labelText, min, max, initialValue, onChange, parentDiv,
 }
 
 // ===== 텍스트 빌드 =====
-function applyTypedText() {
-  textContent = textArea.value();
-  if (!textContent) textContent = " ";
-  buildAllText();
-}
-
 function buildAllText() {
   centers = [];
-
-  if (layoutMode === "Block") {
-    buildBlockText();
-  } else {
-    buildRadialText(); // Circle / Arc
-  }
-
+  if (layoutMode === "Block") buildBlockText();
+  else buildRadialText();
   centerAlignCenters();
-  rippleProgress = 1;
-  animating = false;
-  pingForward = true;
 }
 
 // 블록 레이아웃
 function buildBlockText() {
   let fontSize = textSizeVal;
-  let lines = textContent.toUpperCase().split('\n');
-
+  let lines = textContent.toUpperCase().split("\n");
   let allCenters = [];
   let glyphCounter = 0;
 
@@ -658,7 +605,7 @@ function buildBlockText() {
     for (let i = 0; i < line.length; i++) {
       let ch = line[i];
 
-      if (ch === ' ') {
+      if (ch === " ") {
         cursorX += fontSize * 0.35 + letterSpacingVal;
         continue;
       }
@@ -683,13 +630,13 @@ function buildBlockText() {
 // 원형 / 아치 레이아웃
 function buildRadialText() {
   let fontSize = textSizeVal;
-  let textFlat = textContent.toUpperCase().replace(/\n/g, ' ');
-  if (textFlat.length === 0) {
+  let textFlat = textContent.toUpperCase().replace(/\n/g, " ");
+  if (!textFlat.length) {
     centers = [];
     return;
   }
 
-  let chars = textFlat.split('');
+  let chars = textFlat.split("");
   let total = chars.length;
   let allCenters = [];
   let glyphCounter = 0;
@@ -698,7 +645,7 @@ function buildRadialText() {
   if (layoutMode === "Circle") {
     startAngle = 0;
     endAngle = TWO_PI;
-  } else { // Arc
+  } else {
     let spanRad = radians(arcSpanDeg);
     startAngle = -spanRad / 2;
     endAngle = spanRad / 2;
@@ -713,7 +660,7 @@ function buildRadialText() {
     let baseX = layoutRadius * cos(angle);
     let baseY = layoutRadius * sin(angle);
 
-    if (ch === ' ') {
+    if (ch === " ") {
       glyphCounter++;
       continue;
     }
@@ -742,16 +689,15 @@ function addSnappedPoint(allCenters, gx, gy, gIndex) {
   let sy = Math.round(gy / spacing) * spacing;
 
   for (let q of allCenters) {
-    if (dist(sx, sy, q.x, q.y) < spacing * 0.4) {
-      return;
-    }
+    if (dist(sx, sy, q.x, q.y) < spacing * 0.4) return;
   }
+
   let v = createVector(sx, sy);
   v.gIndex = gIndex;
   allCenters.push(v);
 }
 
-// 글자 하나의 점들 가져오기
+// 글자 하나의 점들 가져오기 (p5 font)
 function getGlyphPoints(ch, fontSize) {
   let bounds = font.textBounds(ch, 0, 0, fontSize);
   if (!bounds) return null;
@@ -760,35 +706,28 @@ function getGlyphPoints(ch, fontSize) {
   let y0 = bounds.h / 2 - bounds.y;
 
   let pts = font.textToPoints(ch, x0, y0, fontSize, {
-    sampleFactor: 0.6,
-    simplifyThreshold: 0
+    sampleFactor: 0.6
   });
 
-  return {
-    pts: pts,
-    width: bounds.w
-  };
+  return { pts, width: bounds.w };
 }
 
 // 전체 centers를 캔버스 중앙으로 이동
 function centerAlignCenters() {
-  if (centers.length === 0) return;
+  if (!centers.length) return;
 
   let minX = Infinity, minY = Infinity;
   let maxX = -Infinity, maxY = -Infinity;
 
   for (let c of centers) {
-    if (c.x < minX) minX = c.x;
-    if (c.x > maxX) maxX = c.x;
-    if (c.y < minY) minY = c.y;
-    if (c.y > maxY) maxY = c.y;
+    minX = min(minX, c.x);
+    minY = min(minY, c.y);
+    maxX = max(maxX, c.x);
+    maxY = max(maxY, c.y);
   }
 
-  let axisX = (minX + maxX) / 2;
-  let axisY = (minY + maxY) / 2;
-
-  let dx = width / 2 - axisX;
-  let dy = height / 2 - axisY;
+  let dx = width / 2 - (minX + maxX) / 2;
+  let dy = height / 2 - (minY + maxY) / 2;
 
   for (let c of centers) {
     c.x += dx;
@@ -796,57 +735,35 @@ function centerAlignCenters() {
   }
 }
 
-// ===== Ripple 그리기 + Easing/Color/Shape/Fill =====
+// ===== Ripple 그리기 =====
 function drawRipple(pt, progress) {
   let cx = pt.x;
   let cy = pt.y;
   let gIndex = pt.gIndex || 0;
 
   for (let r = radiusMin; r <= radiusMax; r += step) {
-    let t = (r - radiusMin) / (radiusMax - radiusMin); // 0~1
+    let t = (r - radiusMin) / (radiusMax - radiusMin);
 
-    let visible;
-    if (rippleDirection === "Inside-Out") {
-      visible = t <= progress;
-    } else {
-      visible = t >= 1 - progress;
-    }
+    let visible = (rippleDirection === "Inside-Out")
+      ? t <= progress
+      : t >= 1 - progress;
     if (!visible) continue;
 
-    let alpha = 90;
-    let rCol = 0, gCol = 0, bCol = 0;
+    let col = getColorForRipple(t, r, gIndex);
+    let alpha = 140;
 
-    // 색상 계산
-    if (perCharColor) {
-      let col = getPerCharColor(gIndex);
-      rCol = col[0]; gCol = col[1]; bCol = col[2];
-    } else if (colorPalette === "Black") {
-      rCol = gCol = bCol = 0;
-    } else if (colorPalette === "Gray") {
-      rCol = gCol = bCol = 80;
-    } else if (colorPalette === "Red") {
-      rCol = 220; gCol = 80;  bCol = 80;
-    } else if (colorPalette === "Blue") {
-      rCol = 40;  gCol = 80;  bCol = 200;
-    } else if (colorPalette === "Rainbow") {
-      rCol = map(r, radiusMin, radiusMax, 60, 255);
-      gCol = map(r, radiusMin, radiusMax, 200, 60);
-      bCol = map(r, radiusMin, radiusMax, 255, 120);
-    }
-
-    // LineX / LineY는 채우기 개념이 거의 없으니까 항상 stroke로
+    // LineX / LineY는 항상 stroke
     let forceStroke = (shapeMode === "LineX" || shapeMode === "LineY");
 
     if (drawMode === "Fill" && !forceStroke) {
       noStroke();
-      fill(rCol, gCol, bCol, alpha);
+      fill(col[0], col[1], col[2], alpha);
     } else {
       noFill();
-      stroke(rCol, gCol, bCol, alpha);
+      stroke(col[0], col[1], col[2], alpha);
       strokeWeight(strokeW);
     }
 
-    // 모양 결정
     if (shapeMode === "Circle") {
       ellipse(cx, cy, r * 2, r * 2);
     } else if (shapeMode === "LineX") {
@@ -857,18 +774,59 @@ function drawRipple(pt, progress) {
       rectMode(CENTER);
       rect(cx, cy, r * 2, r * 2);
     } else if (shapeMode === "Triangle") {
-      let x1 = cx;
-      let y1 = cy - r;
-      let x2 = cx - r;
-      let y2 = cy + r;
-      let x3 = cx + r;
-      let y3 = cy + r;
-      triangle(x1, y1, x2, y2, x3, y3);
+      triangle(cx, cy - r, cx - r, cy + r, cx + r, cy + r);
     } else if (shapeMode === "Dot") {
       let dotSize = step * 0.4;
       ellipse(cx + r * 0.3, cy, dotSize, dotSize);
     }
   }
+}
+
+// 팔레트별 색상
+function getColorForRipple(t, r, gIndex) {
+  if (perCharColor) return getPerCharColor(gIndex);
+
+  if (colorPalette === "Black") return [0, 0, 0];
+  if (colorPalette === "Gray")  return [80, 80, 80];
+  if (colorPalette === "Red")   return [220, 80, 80];
+  if (colorPalette === "Blue")  return [40, 80, 200];
+
+  if (colorPalette === "Rainbow") {
+    return [
+      map(r, radiusMin, radiusMax, 60, 255),
+      map(r, radiusMin, radiusMax, 200, 60),
+      map(r, radiusMin, radiusMax, 255, 120)
+    ];
+  }
+
+  if (colorPalette === "Neon") {
+    let tt = constrain(t, 0, 1);
+    return [
+      lerp(80, 255, tt),
+      lerp(255, 40, tt),
+      lerp(200, 180, tt)
+    ];
+  }
+
+  if (colorPalette === "Candy") {
+    let tt = constrain(t, 0, 1);
+    return [
+      lerp(255, 255, tt),
+      lerp(150, 210, tt),
+      lerp(190, 150, tt)
+    ];
+  }
+
+  if (colorPalette === "PastelGlow") {
+    let tt = constrain(t, 0, 1);
+    return [
+      lerp(180, 240, tt),
+      lerp(200, 255, tt),
+      lerp(220, 255, tt)
+    ];
+  }
+
+  return [0, 0, 0];
 }
 
 function getPerCharColor(i) {
@@ -883,19 +841,19 @@ function getPerCharColor(i) {
   return colors[i % colors.length];
 }
 
+// ===== Easing =====
 function applyEasing(t, mode) {
   t = constrain(t, 0, 1);
   if (mode === "EaseInOutQuad") {
-    return t < 0.5
-      ? 2 * t * t
-      : 1 - pow(-2 * t + 2, 2) / 2;
-  } else if (mode === "EaseOutCubic") {
+    return t < 0.5 ? 2 * t * t : 1 - pow(-2 * t + 2, 2) / 2;
+  }
+  if (mode === "EaseOutCubic") {
     return 1 - pow(1 - t, 3);
   }
-  return t; // Linear
+  return t;
 }
 
-// ===== 인터랙션 & Export =====
+// ===== 인터랙션 =====
 function mousePressed() {
   if (animMode === "Manual") {
     rippleProgress = 0;
@@ -909,7 +867,6 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  // A~Z 테스트용
   if (keyCode === RIGHT_ARROW) {
     currentIndex = (currentIndex + 1) % letters.length;
     textContent = letters[currentIndex];
@@ -928,6 +885,7 @@ function keyPressed() {
   }
 }
 
+// ===== Export =====
 function exportPNG() {
-  saveCanvas(canvas, 'type_ripple', 'png');
+  saveCanvas(canvas, "type_ripple", "png");
 }
